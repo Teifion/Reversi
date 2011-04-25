@@ -23,6 +23,7 @@ class Reversi (object):
 		
 		self.turn = 1
 		self.player = 1
+		self.victory = 0
 		
 		self.board = [[0 for x in range(8)] for x in range(8)]
 		
@@ -31,9 +32,16 @@ class Reversi (object):
 		self.board[4][3] = 2
 		self.board[4][4] = 1
 		
+		self.board[4][5] = 2
+		self.board[4][6] = 2
+		
 		self.has_changed = True
 	
 	def perform_move(self, x, y):
+		# If the game is over we don't need to do anything here
+		if self.victory != 0:
+			return
+		
 		# First check that the tile is empty
 		if self.board[x][y] != 0:
 			raise Illegal_move("Player {0} tried to place a tile at {1},{2} but it is already occupied by {3}".format(
@@ -41,30 +49,6 @@ class Reversi (object):
 				x, y,
 				self.board[x][y]
 			))
-		
-		# # Is it next to an existing piece?
-		# next_to = False
-		# # Left
-		# if x > 0:
-		# 	if self.board[x-1][y] > 0: next_to = True
-		# 
-		# # Right
-		# if x < 7:
-		# 	if self.board[x+1][y] > 0: next_to = True
-		# 
-		# # Up
-		# if y > 0:
-		# 	if self.board[x][y-1] > 0: next_to = True
-		# 
-		# # Down
-		# if y < 7:
-		# 	if self.board[x][y+1] > 0: next_to = True
-		# 
-		# if not next_to:
-		# 	raise Illegal_move("Player {0} tried to place a tile at {1},{2} but it is not next to any other tiles".format(
-		# 		self.player,
-		# 		x, y,
-		# 	))
 		
 		# Place it and work out the flips
 		self.place_piece(x, y)
@@ -79,13 +63,27 @@ class Reversi (object):
 		# No moves left to make, end the game
 		if white_tiles < 1 or black_tiles < 1 or empty_tiles < 1:
 			self.end_game()
+			self.has_changed = True
+			return
+		
+		# TODO Make the game detect when there are no possible moves left
 		
 		# Alternate between player 1 and 2
 		self.player = 3 - self.player
 		self.has_changed = True
 	
 	def end_game(self):
-		raise Exception("END GAME")
+		all_tiles = [item for sublist in self.board for item in sublist]
+		
+		white_tiles = len([0 for tile in all_tiles if tile == 1])
+		black_tiles = len([0 for tile in all_tiles if tile == 2])
+		
+		if white_tiles > black_tiles:
+			self.victory = 1
+		elif white_tiles < black_tiles:
+			self.victory = 2
+		else:
+			self.victory = -1
 	
 	def place_piece(self, x, y):
 		self.board[x][y] = self.player
@@ -223,6 +221,7 @@ class Reversi (object):
 				lx += 1
 				ly -= 1
 				
+				if lx > 7 or ly < 0: break
 				if search_complete: continue
 				
 				counter = self.board[lx][ly]
@@ -252,6 +251,7 @@ class Reversi (object):
 				lx -= 1
 				ly += 1
 				
+				if lx < 0 or ly > 7: break
 				if search_complete: continue
 				
 				counter = self.board[lx][ly]
@@ -259,10 +259,13 @@ class Reversi (object):
 				if counter == 0:
 					changes = []
 					search_complete = True
+					break
 				elif counter == self.player:
 					search_complete = True
+					break
 				else:
 					changes.append((lx, ly))
+			
 			
 			# Perform changes
 			if search_complete:
@@ -282,6 +285,7 @@ class Reversi (object):
 				lx -= 1
 				ly -= 1
 				
+				if lx < 0 or ly < 0: break
 				if search_complete: continue
 				
 				counter = self.board[lx][ly]
@@ -311,6 +315,7 @@ class Reversi (object):
 				lx += 1
 				ly += 1
 				
+				if lx > 7 or ly > 7: break
 				if search_complete: continue
 				
 				counter = self.board[lx][ly]

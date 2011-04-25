@@ -64,6 +64,12 @@ class Engine_v1 (object):
 		
 		self.draw_board()
 	
+	def drawText(self, text, font, surface, x, y):
+		textobj = font.render(text, 1, (0,0,0))
+		textrect = textobj.get_rect()
+		textrect.topleft = (x, y)
+		surface.blit(textobj, textrect)
+	
 	def draw_board(self):
 		# First the board
 		the_board = pygame.Rect(0, 0, WINDOWWIDTH, WINDOWHEIGHT)
@@ -80,24 +86,16 @@ class Engine_v1 (object):
 				elif player == 2:
 					self.surface.blit(self.resources['black'], counter)
 		
-		
+		# Has a victory occurred?
+		font = pygame.font.SysFont("Helvetica", 48)
+		if self.game.victory == -1:
+			self.drawText("Stalemate", font, self.surface, 95, 10)
+		if self.game.victory == 1:
+			self.drawText("Victory to White", font, self.surface, 38, 10)
+		if self.game.victory == 2:
+			self.drawText("Victory to Black", font, self.surface, 39, 10)
 		
 		pygame.display.update()
-		#		# Draw the game world on the window.
-		#		windowSurface.fill(BACKGROUNDCOLOR)
-		# 
-		#		# Draw the score and top score.
-		#		drawText('Score: %s' % (score), font, windowSurface, 10, 0)
-		#		drawText('Top Score: %s' % (topScore), font, windowSurface, 10, 40)
-		# 
-		#		# Draw the player's rectangle
-		#		windowSurface.blit(playerImage, playerRect)
-		# 
-		#		# Draw each baddie
-		#		for b in baddies:
-		#			windowSurface.blit(b['surface'], b['rect'])
-		# 
-		#		pygame.display.update()
 	
 	def handle_keydown(self, event):
 		self.keys_down[event.key] = time.time()
@@ -157,6 +155,7 @@ class Engine_v1 (object):
 			if self.game.has_changed:
 				self.draw_board()
 				self.game.has_changed = False
+			
 			
 			self.main_clock.tick(FPS)
 		

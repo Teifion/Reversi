@@ -32,9 +32,6 @@ class Reversi (object):
 		self.board[4][3] = 2
 		self.board[4][4] = 1
 		
-		self.board[4][5] = 2
-		self.board[4][6] = 2
-		
 		self.has_changed = True
 	
 	def perform_move(self, x, y):
@@ -343,6 +340,9 @@ class Reversi (object):
 			
 	
 	def ascii_board(self):
+		"""
+		Print board so that it can be debugged in the terminal
+		"""
 		for r in self.board:
 			print("".join([str(t) for t in r]))
 		print("")

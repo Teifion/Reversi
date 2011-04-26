@@ -1,3 +1,5 @@
+import ai
+
 class Game_error(Exception):
 	"""Errors related to the game in general"""
 	pass
@@ -32,13 +34,32 @@ class Reversi (object):
 		self.board[4][3] = 2
 		self.board[4][4] = 1
 		
+		# Setup AI
+		self.use_ai = True
+		self.ai = ai.Game_ai(self)
+		
 		self.has_changed = True
+		self.ai_is_ready = False
 	
-	def perform_move(self, x, y):
+	def player_move(self, x, y):
 		# If the game is over we don't need to do anything here
 		if self.victory != 0:
 			return
 		
+		# Is it the AI turn?
+		if self.use_ai and self.player != 1:
+			return
+		
+		self.perform_move(x,y)
+		
+		# Maybe have the AI make a move
+		if self.use_ai:
+			self.ai.make_move()
+			self.ai_is_ready = True
+		
+		self.has_changed = True
+	
+	def perform_move(self, x, y):
 		# First check that the tile is empty
 		if self.board[x][y] != 0:
 			raise Illegal_move("Player {0} tried to place a tile at {1},{2} but it is already occupied by {3}".format(
@@ -67,7 +88,9 @@ class Reversi (object):
 		
 		# Alternate between player 1 and 2
 		self.player = 3 - self.player
-		self.has_changed = True
+	
+	def ai_move(self):
+		self.ai.perform_move()
 	
 	def end_game(self):
 		all_tiles = [item for sublist in self.board for item in sublist]
@@ -82,8 +105,9 @@ class Reversi (object):
 		else:
 			self.victory = -1
 	
-	def place_piece(self, x, y):
-		self.board[x][y] = self.player
+	def place_piece(self, x, y, live_mode=True):
+		if live_mode:
+			self.board[x][y] = self.player
 		change_count = 0
 		
 		# Get a reference to the row and column that we just placed a piece on
@@ -111,8 +135,9 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i in changes:
-					self.board[x][i] = self.player
+				if live_mode:
+					for i in changes:
+						self.board[x][i] = self.player
 		
 		# Down?
 		if self.player in column[y:]:
@@ -135,8 +160,9 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i in changes:
-					self.board[x][i] = self.player
+				if live_mode:
+					for i in changes:
+						self.board[x][i] = self.player
 		
 		# Left?
 		if self.player in row[:x]:
@@ -159,8 +185,9 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i in changes:
-					self.board[i][y] = self.player
+				if live_mode:
+					for i in changes:
+						self.board[i][y] = self.player
 		
 		# Right?
 		if self.player in row[x:]:
@@ -183,8 +210,9 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i in changes:
-					self.board[i][y] = self.player
+				if live_mode:
+					for i in changes:
+						self.board[i][y] = self.player
 		
 		# Diagonals are a little harder
 		xy_sum = x + y
@@ -234,8 +262,9 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i, j in changes:
-					self.board[i][j] = self.player
+				if live_mode:
+					for i, j in changes:
+						self.board[i][j] = self.player
 		
 		# Down Right
 		if self.player in bl_tr_diagonal:
@@ -267,8 +296,9 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i, j in changes:
-					self.board[i][j] = self.player
+				if live_mode:
+					for i, j in changes:
+						self.board[i][j] = self.player
 		
 		
 		# Up Left
@@ -298,8 +328,9 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i, j in changes:
-					self.board[i][j] = self.player
+				if live_mode:
+					for i, j in changes:
+						self.board[i][j] = self.player
 		
 		# Down Right
 		if self.player in br_tl_diagonal:
@@ -328,16 +359,20 @@ class Reversi (object):
 			# Perform changes
 			if search_complete:
 				change_count += len(changes)
-				for i, j in changes:
-					self.board[i][j] = self.player
+				if live_mode:
+					for i, j in changes:
+						self.board[i][j] = self.player
 		
-		if change_count == 0:
+		if change_count == 0 and live_mode:
 			self.board[x][y] = 0
 			raise Illegal_move("Player {0} tried to place a tile at {1},{2} but that will result in 0 flips".format(
 				self.player,
 				x, y,
 			))
-			
+		
+		if change_count > 0:
+			print("Tested at {0},{1} and found {2} changes".format(x, y, change_count))
+		return change_count
 	
 	def ascii_board(self):
 		"""

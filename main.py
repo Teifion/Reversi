@@ -138,7 +138,8 @@ class Engine_v1 (object):
                     self.handle_mousemove(event)
                 
                 else:
-                    print(event)
+                    pass
+                    # print(event)
             
             # Turn based game so we don't need to always update
             if self.game.has_changed:

@@ -6,7 +6,9 @@ class Game_ai (object):
 		self.game = game
 		self.move = (-1,-1)
 	
-	def make_move(self, excep=True):
+	def make_move(self):
+		time.sleep(0.1)
+		
 		changes = {}
 		
 		for x in range(0,8):
@@ -22,8 +24,5 @@ class Game_ai (object):
 			if v > max_val:
 				max_key = k
 		
-		self.move = max_key
-	
-	def perform_move(self):
-		time.sleep(1)
-		self.game._perform_move(self.move)
+		x, y = max_key
+		self.game.perform_move(x, y)

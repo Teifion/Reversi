@@ -54,10 +54,7 @@ class Reversi (object):
 		
 		# Maybe have the AI make a move
 		if self.use_ai:
-			self.ai.make_move()
 			self.ai_is_ready = True
-		
-		self.has_changed = True
 	
 	def perform_move(self, x, y):
 		# First check that the tile is empty
@@ -88,9 +85,11 @@ class Reversi (object):
 		
 		# Alternate between player 1 and 2
 		self.player = 3 - self.player
+		self.has_changed = True
 	
 	def ai_move(self):
-		self.ai.perform_move()
+		self.ai.make_move()
+		self.ai_is_ready = False
 	
 	def end_game(self):
 		all_tiles = [item for sublist in self.board for item in sublist]

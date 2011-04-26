@@ -71,9 +71,9 @@ class Reversi (object):
         # Does this end the game?
         all_tiles = [item for sublist in self.board for item in sublist]
         
-        empty_tiles = len([0 for tile in all_tiles if tile == 0])
-        white_tiles = len([0 for tile in all_tiles if tile == 1])
-        black_tiles = len([0 for tile in all_tiles if tile == 2])
+        empty_tiles = sum(1 for tile in all_tiles if tile == 0)
+        white_tiles = sum(1 for tile in all_tiles if tile == 1)
+        black_tiles = sum(1 for tile in all_tiles if tile == 2)
         
         # No moves left to make, end the game
         if white_tiles < 1 or black_tiles < 1 or empty_tiles < 1:
@@ -111,8 +111,8 @@ class Reversi (object):
     def end_game(self):
         all_tiles = [item for sublist in self.board for item in sublist]
         
-        white_tiles = len([0 for tile in all_tiles if tile == 1])
-        black_tiles = len([0 for tile in all_tiles if tile == 2])
+        white_tiles = sum(1 for tile in all_tiles if tile == 1)
+        black_tiles = sum(1 for tile in all_tiles if tile == 2)
         
         if white_tiles > black_tiles:
             self.victory = 1

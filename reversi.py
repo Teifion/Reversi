@@ -19,7 +19,7 @@ class Reversi (object):
     1 = White (player 1)
     2 = Black (player 2)
     """
-    
+	
     def __init__(self):
         super(Reversi, self).__init__()
         

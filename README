@@ -1,0 +1,15 @@
+Use this code as you see fit, it's so far got zero tests and probably doesn't work correctly on certain systems. I'm putting it here because I'm sure somebody will benefit from using it.
+
+Dependancies:
+    Python 2.6.1
+    PyGame
+
+I wanted to learn how to use PyGame and figured that 0's and X's was a little too basic for what I wanted to do so tried my hand at Reversi (http://en.wikipedia.org/wiki/Reversi). This is the result.
+
+The program is run simply with:
+
+    python main.py
+
+By default the AI is enabled, you can turn it off manually in reversi.py by setting "use_ai" to False in the __init__ function of the Reversi class.
+
+The program was written on a Mac so the Quit and New game commands (Cmd + Q and Cmd + N) will probably not work on a PC as I'm not sure what the keyboard shortcuts for those are.

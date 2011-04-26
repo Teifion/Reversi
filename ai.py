@@ -18,6 +18,11 @@ class Game_ai (object):
 					if c > 0:
 						changes[(x,y)] = c
 		
+		# No moves can be found
+		if changes == {}:
+			self.game.end_game()
+			return
+		
 		max_key, max_val = (-1,-1), 0
 		
 		for k, v in changes.items():

@@ -97,7 +97,7 @@ class Reversi (object):
         for x in range(0,8):
             for y in range(0,8):
                 if move_found: continue
-                if self.game.board[x][y] == 0:
+                if self.board[x][y] == 0:
                     c = self.place_piece(x, y, live_mode=False)
                     if c > 0:
                         move_found = True

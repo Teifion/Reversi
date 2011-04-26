@@ -22,26 +22,6 @@ class Engine_v1 (object):
         
         self.game = reversi.Reversi()
     
-    # def _waitForPlayerToPressKey():
-    #   while True:
-    #       for event in pygame.event.get():
-    #           if event.type == QUIT:
-    #               quit()
-    #           if event.type == KEYDOWN:
-    #               if event.key == K_ESCAPE: # pressing escape quits
-    #                   quit()
-    #               return
-
-    def playerHasHitBaddie(self, playerRect, baddies):
-        for b in baddies:
-            if playerRect.colliderect(b['rect']):
-                return True
-        return False
-    
-    def add_tile(self, x, y, player):
-        pass
-        #   return pygame.Rect(40, 40, x * TILE_SIZE + 5, y * TILE_SIZE + 5)
-
     def startup(self):
         # set up pygame, the window, and the mouse cursor
         pygame.init()

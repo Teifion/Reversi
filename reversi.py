@@ -78,14 +78,31 @@ class Reversi (object):
 		# No moves left to make, end the game
 		if white_tiles < 1 or black_tiles < 1 or empty_tiles < 1:
 			self.end_game()
-			self.has_changed = True
 			return
 		
-		# TODO Make the game detect when there are no possible moves left
+		# Are there any moves able to be made?
+		move_found = self.move_can_be_made()
+		
+		if not move_found:
+			self.end_game()
+			return
 		
 		# Alternate between player 1 and 2
 		self.player = 3 - self.player
 		self.has_changed = True
+	
+	def move_can_be_made(self):
+		move_found = False
+		
+		for x in range(0,8):
+			for y in range(0,8):
+				if move_found: continue
+				if self.game.board[x][y] == 0:
+					c = self.place_piece(x, y, live_mode=False)
+					if c > 0:
+						move_found = True
+		
+		return move_found
 	
 	def ai_move(self):
 		self.ai.make_move()
@@ -103,6 +120,8 @@ class Reversi (object):
 			self.victory = 2
 		else:
 			self.victory = -1
+		
+		self.has_changed = True
 	
 	def place_piece(self, x, y, live_mode=True):
 		if live_mode:

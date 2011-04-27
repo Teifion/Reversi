@@ -388,8 +388,8 @@ class Reversi (object):
                 x, y,
             ))
         
-        if change_count > 0:
-            print("Tested at {0},{1} and found {2} changes".format(x, y, change_count))
+        # if change_count > 0:
+        #     print("Tested at {0},{1} and found {2} changes".format(x, y, change_count))
         return change_count
     
     def ascii_board(self):

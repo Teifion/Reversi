@@ -1,6 +1,7 @@
 import pygame, random, sys, time, math
 from pygame.locals import *
-import ai, reversi
+import ai, reversi, tests
+import os
 
 def quit():
     pygame.quit()
@@ -155,9 +156,7 @@ class Engine_v1 (object):
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'test':
-        import unittest, tests
-        print("Test mode")
-        # unittest.main()
+        os.system('python tests.py')
     else:
         ge = Engine_v1()
         ge.start()

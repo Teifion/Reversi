@@ -3,6 +3,7 @@ import reversi
 
 def dummy_game(board):
     g = reversi.Reversi()
+    g.board = [[0 for x in range(8)] for x in range(8)]
     
     for k, v in board.items():
         x, y = k
@@ -46,15 +47,17 @@ class Move_class(unittest.TestCase):
     
     def test_taking_to_down_right(self):
         g = dummy_game({
-            (5,5): 2,
-            (6,6): 1,
+            # X
+                (5,5): 2,
+                    (6,6): 1,
         })
         
         self.assertEqual(1, g.place_piece(4, 4, live_mode=False))
         
     def test_taking_to_top_right(self):
         g = dummy_game({
-            (5,5): 2,
+                    # X
+                (5,5): 2,
             (4,6): 1,
         })
         
@@ -62,16 +65,18 @@ class Move_class(unittest.TestCase):
     
     def test_taking_to_down_left(self):
         g = dummy_game({
-            (5,5): 2,
-            (6,4): 1,
+                    (6, 4): 1,
+                (5,5): 2,
+            # X
         })
         
         self.assertEqual(1, g.place_piece(4, 6, live_mode=False))
     
     def test_taking_to_top_left(self):
         g = dummy_game({
-            (5,5): 2,
             (4,4): 1,
+                (5,5): 2,
+                    # X
         })
         
         self.assertEqual(1, g.place_piece(6, 6, live_mode=False))
@@ -85,7 +90,6 @@ class Move_class(unittest.TestCase):
         })
         
         self.assertEqual(0, g.place_piece(0, 0, live_mode=False))
-        
         
         g = dummy_game({
             (1,0): 2,
@@ -108,7 +112,7 @@ class Move_class(unittest.TestCase):
             [0,0,0,0,0,0,0,0],
         ]
         
-        self.assertEqual(1, g.place_piece(0, 0, live_mode=False))
+        self.assertEqual(2, g.place_piece(0, 0, live_mode=False))
 
 if __name__ == '__main__':
     unittest.main()

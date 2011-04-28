@@ -17,4 +17,3 @@ The program was written on a Mac so the Quit and New game commands (Cmd + Q and 
 Things that can be improved upon:
     Classes are not named correctly according to PEP8
     The AI is very dumb, it simply goes for the moves that capture the most
-    There may be a bug with some of the diagonal taking moves (Top left to Bottom Right specifically)

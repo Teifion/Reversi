@@ -34,17 +34,6 @@ class Reversi (object):
         self.board[4][3] = 2
         self.board[4][4] = 1
         
-        self.board = [
-            [0,1,0,1,2,1,0,0],
-            [0,2,2,2,2,1,0,0],
-            [0,0,2,2,2,1,0,0],
-            [0,1,1,1,1,1,0,0],
-            [0,0,1,1,1,1,0,0],
-            [0,0,1,1,1,1,2,0],
-            [0,1,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0],
-        ]
-        
         # Setup AI
         self.use_ai = True
         self.ai = ai.Game_ai(self)
@@ -244,19 +233,19 @@ class Reversi (object):
                         self.board[i][y] = self.player
         
         # Diagonals are a little harder
-        i, j = 0, 7
+        i, j = x-7, y+7
         bl_tr_diagonal = []
         
-        for q in range(0, 8):
+        for q in range(0, 16):
             if 0 <= i < 8 and 0 <= j < 8:
                 bl_tr_diagonal.append(self.board[i][j])
             
             i += 1
             j -= 1
         
-        i, j = 0, 0
+        i, j = x-7, y-7
         br_tl_diagonal = []
-        for q in range(0, 8):
+        for q in range(0, 16):
             
             if 0 <= i < 8 and 0 <= j < 8:
                 br_tl_diagonal.append(self.board[i][j])
@@ -295,7 +284,7 @@ class Reversi (object):
                     for i, j in changes:
                         self.board[i][j] = self.player
         
-        # Down Right
+        # Down Left
         if self.player in bl_tr_diagonal:
             changes = []
             search_complete = False
@@ -310,6 +299,7 @@ class Reversi (object):
                 if search_complete: continue
                 
                 counter = self.board[lx][ly]
+                
                 
                 if counter == 0:
                     changes = []

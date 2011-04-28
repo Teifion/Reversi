@@ -93,6 +93,22 @@ class Move_class(unittest.TestCase):
         })
         
         self.assertEqual(1, g.place_piece(0, 0, live_mode=False))
+        
+    
+    def test_weird_edge_cases(self):
+        g = reversi.Reversi()
+        g.board = [
+            [0,1,0,1,2,1,0,0],
+            [0,2,2,2,2,1,0,0],
+            [0,0,2,2,2,1,0,0],
+            [0,1,1,1,1,1,0,0],
+            [0,0,1,1,1,1,0,0],
+            [0,0,1,1,1,1,2,0],
+            [0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0],
+        ]
+        
+        self.assertEqual(1, g.place_piece(0, 0, live_mode=False))
 
 if __name__ == '__main__':
     unittest.main()
